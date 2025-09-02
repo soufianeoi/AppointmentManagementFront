@@ -1,0 +1,176 @@
+<div class="detail-container" *ngIf="!loading && appointment">
+  <!-- Header -->
+  <div class="detail-header">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Détails du rendez-vous</h1>
+    <button mat-raised-button color="primary" (click)="editAppointment()">
+      <mat-icon>edit</mat-icon>
+      Modifier
+    </button>
+  </div>
+
+  <!-- Status Card -->
+  <mat-card class="status-card">
+    <mat-card-content>
+      <div class="status-display">
+        <mat-chip [color]="getStatusColor(appointment.status)" selected>
+          {{ statusLabels[appointment.status] }}
+        </mat-chip>
+        <div class="appointment-id">ID: #{{ appointment.id }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Main Information -->
+  <div class="detail-grid">
+    <!-- Appointment Information -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>event</mat-icon>
+          Informations du rendez-vous
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-item">
+          <label>Titre:</label>
+          <span>{{ appointment.title }}</span>
+        </div>
+        <div class="info-item" *ngIf="appointment.description">
+          <label>Description:</label>
+          <span>{{ appointment.description }}</span>
+        </div>
+        <div class="info-item">
+          <label>Date de début:</label>
+          <span>{{ appointment.startDate | date:'full' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Date de fin:</label>
+          <span>{{ appointment.endDate | date:'full' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Durée:</label>
+          <span>{{ appointment.startDate | date:'HH:mm' }} - {{ appointment.endDate | date:'HH:mm' }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Patient Information -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>person</mat-icon>
+          Informations patient
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-item">
+          <label>Nom:</label>
+          <span>{{ appointment.patientName }}</span>
+        </div>
+        <div class="info-item">
+          <label>Email:</label>
+          <span>{{ appointment.patientEmail }}</span>
+        </div>
+        <div class="info-item">
+          <label>Téléphone:</label>
+          <span>{{ appointment.patientPhone }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Doctor Information -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>medical_services</mat-icon>
+          Informations docteur
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-item">
+          <label>Nom:</label>
+          <span>{{ appointment.doctorName }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- System Information -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>info</mat-icon>
+          Informations système
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-item">
+          <label>Créé le:</label>
+          <span>{{ appointment.createdAt | date:'short' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Modifié le:</label>
+          <span>{{ appointment.updatedAt | date:'short' }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Actions -->
+  <mat-card class="actions-card">
+    <mat-card-header>
+      <mat-card-title>Actions disponibles</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="actions-grid">
+        <button mat-raised-button 
+                color="accent" 
+                (click)="confirmAppointment()" 
+                [disabled]="!canConfirm()">
+          <mat-icon>check_circle</mat-icon>
+          Confirmer
+        </button>
+
+        <button mat-raised-button 
+                color="primary" 
+                (click)="startAppointment()" 
+                [disabled]="!canStart()">
+          <mat-icon>play_arrow</mat-icon>
+          Démarrer
+        </button>
+
+        <button mat-raised-button 
+                color="primary" 
+                (click)="completeAppointment()" 
+                [disabled]="!canComplete()">
+          <mat-icon>done</mat-icon>
+          Terminer
+        </button>
+
+        <button mat-stroked-button 
+                color="warn" 
+                (click)="markAsNoShow()" 
+                [disabled]="!canMarkNoShow()">
+          <mat-icon>person_off</mat-icon>
+          Marquer absent
+        </button>
+
+        <button mat-stroked-button 
+                color="warn" 
+                (click)="cancelAppointment()" 
+                [disabled]="!canCancel()">
+          <mat-icon>cancel</mat-icon>
+          Annuler
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+  <p>Chargement du rendez-vous...</p>
+</div>

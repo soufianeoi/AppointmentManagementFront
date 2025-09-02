@@ -1,0 +1,137 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{ isEditMode ? 'Modifier le rendez-vous' : 'Nouveau rendez-vous' }}
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()" class="appointment-form">
+        
+        <!-- Appointment Details Section -->
+        <div class="form-section">
+          <h3>Détails du rendez-vous</h3>
+          
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Titre</mat-label>
+              <input matInput formControlName="title" placeholder="Consultation générale">
+              <mat-error>{{ getFieldError('title') }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="3" 
+                        placeholder="Description du rendez-vous (optionnel)"></textarea>
+              <mat-error>{{ getFieldError('description') }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Date du rendez-vous</mat-label>
+              <input matInput [matDatepicker]="datePicker" formControlName="appointmentDate">
+              <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+              <mat-datepicker #datePicker></mat-datepicker>
+              <mat-error>{{ getFieldError('appointmentDate') }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Heure de début</mat-label>
+              <input matInput type="time" formControlName="startTime" placeholder="09:00">
+              <mat-error>{{ getFieldError('startTime') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Heure de fin</mat-label>
+              <input matInput type="time" formControlName="endTime" placeholder="10:00">
+              <mat-error>{{ getFieldError('endTime') }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Patient Information Section -->
+        <div class="form-section" *ngIf="!isEditMode">
+          <h3>Informations patient</h3>
+          
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du patient</mat-label>
+              <input matInput formControlName="patientName" placeholder="Jean Dupont">
+              <mat-error>{{ getFieldError('patientName') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email du patient</mat-label>
+              <input matInput type="email" formControlName="patientEmail" placeholder="jean.dupont@email.com">
+              <mat-error>{{ getFieldError('patientEmail') }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Téléphone du patient</mat-label>
+              <input matInput formControlName="patientPhone" placeholder="06 12 34 56 78">
+              <mat-error>{{ getFieldError('patientPhone') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du docteur</mat-label>
+              <input matInput formControlName="doctorName" placeholder="Dr. Martin">
+              <mat-error>{{ getFieldError('doctorName') }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Patient Information (Read-only in edit mode) -->
+        <div class="form-section" *ngIf="isEditMode">
+          <h3>Informations patient (non modifiables)</h3>
+          
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du patient</mat-label>
+              <input matInput formControlName="patientName" readonly>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email du patient</mat-label>
+              <input matInput formControlName="patientEmail" readonly>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Téléphone du patient</mat-label>
+              <input matInput formControlName="patientPhone" readonly>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du docteur</mat-label>
+              <input matInput formControlName="doctorName" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="onCancel()">
+        Annuler
+      </button>
+      <button mat-raised-button color="primary" 
+              (click)="onSubmit()" 
+              [disabled]="loading || appointmentForm.invalid">
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        <span *ngIf="!loading">
+          {{ isEditMode ? 'Modifier' : 'Créer' }}
+        </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

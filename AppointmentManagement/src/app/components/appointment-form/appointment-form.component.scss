@@ -1,0 +1,85 @@
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.appointment-form {
+  .form-section {
+    margin-bottom: 32px;
+    
+    h3 {
+      margin: 0 0 16px 0;
+      color: #333;
+      font-weight: 500;
+      font-size: 1.2rem;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    
+    mat-form-field {
+      flex: 1;
+      
+      &.full-width {
+        flex: 1 1 100%;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+}
+
+mat-card {
+  mat-card-header {
+    margin-bottom: 16px;
+    
+    mat-card-title {
+      font-size: 1.5rem;
+      color: #333;
+    }
+  }
+  
+  mat-card-actions {
+    padding: 16px 24px;
+    
+    button {
+      margin-left: 8px;
+      
+      mat-spinner {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 600px) {
+  .form-container {
+    padding: 16px;
+  }
+  
+  mat-card {
+    mat-card-content {
+      padding: 16px;
+    }
+    
+    mat-card-actions {
+      padding: 16px;
+      flex-direction: column;
+      align-items: stretch;
+      
+      button {
+        margin: 4px 0;
+      }
+    }
+  }
+}
